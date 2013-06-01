@@ -1,0 +1,12 @@
+default: default
+warps:
+  default:
+    world: world
+    x1: -128
+    y1: -128
+    x2: 128
+    y2: 128
+avoid:
+  water: true
+  lava: true
+drop-height: 4

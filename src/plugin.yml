@@ -1,0 +1,16 @@
+name: RandomWarp
+main: me.flungo.bukkit.randomwarp.RandomWarp
+version: 1.0.0
+author: flungo
+description: >
+             Execute Commands usings Triggers
+commands:
+  rwarp:
+    aliases: [randomwarp]
+    description: Random warp management
+    usage: |          
+        /<command> [name] - Warps to the specified random warp area or default
+        if no name is provided.
+permissions:
+    rwarp.use:
+        description: Allows player to use the command.
