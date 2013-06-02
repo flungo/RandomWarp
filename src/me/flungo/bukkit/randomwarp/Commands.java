@@ -65,12 +65,15 @@ class Commands implements CommandExecutor {
 		} catch (InvalidWorldException ex) {
 			cs.sendMessage("Could not teleport you. Contact server admin.");
 			plugin.getLogger().log(Level.WARNING, "World {0} does not exists", ex.getMessage());
+			return true;
 		} catch (InvalidCoordinatesException ex) {
 			cs.sendMessage("Could not teleport you. Contact server admin.");
 			plugin.getLogger().log(Level.WARNING, "Problem with coordinates in area {0}", ex.getMessage());
+			return true;
 		} catch (NoLocationFoundException ex) {
 			cs.sendMessage("A safe location could not be found. Please try again.");
 			plugin.getLogger().log(Level.WARNING, "Was unable to find a safe location in area {0}", ex.getMessage());
+			return true;
 		}
 		return false;
 	}
