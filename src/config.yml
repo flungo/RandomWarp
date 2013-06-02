@@ -1,12 +1,24 @@
+#Default warp location
 default: default
+#Defined warps
 warps:
   default:
     world: world
     x1: -128
-    y1: -128
+    z1: -128
     x2: 128
-    y2: 128
+    z2: 128
+#What to avoid the user landing on
 avoid:
   water: true
   lava: true
-drop-height: 4
+  trees: true
+#Height to drop player into place with (No fall damage is incured)
+drop-height: 8
+#Attempts to find a location to warp the player to
+attempts: 10
+#If a auitable location can't be found, warp them somewhere even if it may be on
+#something that was being avoided.
+always-teleport: true
+#Is the plugin enabled (i.e. Can players use it)
+enable: true
