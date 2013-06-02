@@ -11,13 +11,10 @@ import net.milkbowl.vault.permission.Permission;
 public class Permissions {
 	public static JavaPlugin plugin;
 	
-	private static Log log;
-	
 	private static String prefix;
 	
-	public Permissions(JavaPlugin instance, Log logger) {
+	public Permissions(JavaPlugin instance) {
 		plugin = instance;
-		log = logger;
 	}
 	
 	private static boolean op;
@@ -30,29 +27,29 @@ public class Permissions {
 	
 	private void setupOPPermissions() {
 		if (plugin.getConfig().getBoolean("permissions.op")) {
-			log.logMessage("Attempting to configure OP permissions");
+			plugin.getLogger().log(Level.INFO, "Attempting to configure OP permissions");
 			op = true;
 		} else {
-			log.logMessage("OP permissions disabled by config");
+			plugin.getLogger().log(Level.INFO, "OP permissions disabled by config");
 			op = false;
 		}
 	}
 	
 	private void setupBukkitPermissions() {
 		if (plugin.getConfig().getBoolean("permissions.bukkit")) {
-			log.logMessage("Attempting to configure Bukkit Super Permissions");
+			plugin.getLogger().log(Level.INFO, "Attempting to configure Bukkit Super Permissions");
 			bukkit = true;
 		} else {
-			log.logMessage("Bukkit Super Permissions disabled by config");
+			plugin.getLogger().log(Level.INFO, "Bukkit Super Permissions disabled by config");
 			bukkit = false;
 		}
 	}
 	
 	private void setupVaultPermissions() {
 		if (plugin.getConfig().getBoolean("permissions.vault")) {
-			log.logMessage("Attempting to configure Vault permissions");
+			plugin.getLogger().log(Level.INFO, "Attempting to configure Vault permissions");
 			if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
-				log.logMessage("Vault could not be found", Level.SEVERE);
+				plugin.getLogger().log(Level.SEVERE, "Vault could not be found");
 				vault = false;
 			} else {
 				RegisteredServiceProvider<Permission> permissionProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
@@ -65,7 +62,7 @@ public class Permissions {
 					vault = false;
 			}
 		} else {
-			log.logMessage("Vault permissions disabled by config");
+			plugin.getLogger().log(Level.INFO, "Vault permissions disabled by config");
 			vault = false;
 		}
     }
@@ -73,26 +70,26 @@ public class Permissions {
 	public void setupPermissions(String nodePrefix) {
 		setupOPPermissions();
 		if (op) {
-			log.logMessage("OP permissions set up");
+			plugin.getLogger().log(Level.INFO, "OP permissions set up");
 		} else {
-			log.logMessage("OP permissions not set up", Level.WARNING);
+			plugin.getLogger().log(Level.WARNING, "OP permissions not set up");
 		}
 		setupBukkitPermissions();
 		if (bukkit) {
-			log.logMessage("Bukkit Super Permissions set up");
+			plugin.getLogger().log(Level.INFO, "Bukkit Super Permissions set up");
 		} else {
-			log.logMessage("Bukkit Super Permissions not set up", Level.WARNING);
+			plugin.getLogger().log(Level.WARNING, "Bukkit Super Permissions not set up");
 		}
 		setupVaultPermissions();
 		if (vault) {
-			log.logMessage("Vault permissions set up");
+			plugin.getLogger().log(Level.INFO, "Vault permissions set up");
 		} else {
-			log.logMessage("Vault permissions not set up", Level.WARNING);
+			plugin.getLogger().log(Level.WARNING, "Vault permissions not set up");
 		}
 		if (!vault && !bukkit) {
-			log.logMessage("No permission systems have been set up. Default permissions will be used.", Level.WARNING);
+			plugin.getLogger().log(Level.WARNING, "No permission systems have been set up. Default permissions will be used.");
 			if (!op) {
-				log.logMessage("Additionally, OP permissions disabled.", Level.WARNING);
+				plugin.getLogger().log(Level.WARNING, "Additionally, OP permissions disabled.");
 			}
 		}
 	}
@@ -117,14 +114,14 @@ public class Permissions {
 	
 	public boolean isAdmin(Player p) {
 		if (p.isOp() && op) return true;
-		String node = "voidwarp.admin";
+		String node = "rwarp.admin";
 		if (hasNode(p, node)) return true;
 		return false;
 	}
 	
 	public boolean isUser(Player p) {
 		if (!plugin.getConfig().getBoolean("enable")) return false;
-		String node = "voidwarp.user";
+		String node = "rwarp.user";
 		if (hasNode(p, node)) return true;
 		if (isAdmin(p)) return true;
 		if (!bukkit && !vault) return true;
