@@ -32,13 +32,13 @@ class Commands implements CommandExecutor {
 		return false;
 	}
 
-	private boolean handleCommand(CommandSender cs, String[] arg) {
+	private boolean handleCommand(CommandSender cs, String[] args) {
 		if (cs instanceof Player && !(plugin.getPermissions().isUser((Player) cs))) {
 			cs.sendMessage(ChatColor.RED + "You don't have permisson to use that command");
 			return true;
 		}
 		try {
-			if (arg.length <= 0) {
+			if (args.length <= 0) {
 				if (cs instanceof Player) {
 					try {
 						plugin.teleport((Player) cs, plugin.getConfig().getString("default"));
@@ -48,16 +48,49 @@ class Commands implements CommandExecutor {
 					}
 					return true;
 				} else {
+					cs.sendMessage(ChatColor.RED + "Only in game players can use that command.");
 					return false;
 				}
 			}
-			switch (arg[0].toLowerCase()) {
+			switch (args[0].toLowerCase()) {
 				default:
-					if (cs instanceof Player) {
+					if (args.length == 1) {
+						if (cs instanceof Player) {
+							if (!plugin.getPermissions().hasPermission((Player) cs, "warps." + args[0])) {
+								cs.sendMessage(ChatColor.RED + "You do not have permission for that area");
+								return true;
+							}
+							try {
+								plugin.teleport((Player) cs, args[0]);
+							} catch (InvalidAreaException ex) {
+								cs.sendMessage(ChatColor.RED + "Could not teleport you. Area \"" + args[0] + "\" is undefined");
+							}
+							return true;
+						} else {
+							cs.sendMessage(ChatColor.RED + "Only in game players can use that command.");
+							return false;
+						}
+					} else {
+						if (cs instanceof Player) {
+							if (!plugin.getPermissions().hasPermission((Player) cs, "warpother")) {
+								cs.sendMessage(ChatColor.RED + "You don't have permisson to use that command");
+								return true;
+							}
+							if (!plugin.getPermissions().hasPermission((Player) cs, "warps." + args[0])) {
+								cs.sendMessage(ChatColor.RED + "You do not have permission for that area");
+								return true;
+							}
+						}
+						Player p = plugin.getServer().getPlayer(args[1]);
+						if (p == null) {
+							cs.sendMessage(ChatColor.RED + "Player " + args[1] + " was not found or is not online");
+							return true;
+						}
 						try {
-							plugin.teleport((Player) cs, arg[0]);
+							plugin.teleport(p, args[0]);
 						} catch (InvalidAreaException ex) {
-							cs.sendMessage("Could not teleport you. Area \"" + arg[0] + "\" is undefined");
+							cs.sendMessage("Could not teleport " + args[1] + ". Contact server admin.");
+								cs.sendMessage(ChatColor.RED + "Could not teleport " + args[1] + ". Area \"" + args[0] + "\" is undefined");
 						}
 						return true;
 					}
@@ -75,6 +108,5 @@ class Commands implements CommandExecutor {
 			plugin.getLogger().log(Level.WARNING, "Was unable to find a safe location in area {0}", ex.getMessage());
 			return true;
 		}
-		return false;
 	}
 }
