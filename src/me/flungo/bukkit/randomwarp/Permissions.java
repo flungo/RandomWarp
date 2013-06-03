@@ -13,8 +13,13 @@ public class Permissions {
 	
 	private static String prefix;
 	
+	public Permissions(JavaPlugin instance, String prefix) {
+		this.plugin = instance;
+		this.prefix = prefix;
+	}
+	
 	public Permissions(JavaPlugin instance) {
-		plugin = instance;
+		this(instance, instance.getName().replace("\\s", "").toLowerCase());
 	}
 	
 	private static boolean op;
@@ -26,7 +31,7 @@ public class Permissions {
 	private static Permission vaultPermission = null;
 	
 	private void setupOPPermissions() {
-		if (plugin.getConfig().getBoolean("permissions.op")) {
+		if (plugin.getConfig().getBoolean("permissions.op", true)) {
 			plugin.getLogger().log(Level.INFO, "Attempting to configure OP permissions");
 			op = true;
 		} else {
@@ -36,7 +41,7 @@ public class Permissions {
 	}
 	
 	private void setupBukkitPermissions() {
-		if (plugin.getConfig().getBoolean("permissions.bukkit")) {
+		if (plugin.getConfig().getBoolean("permissions.bukkit", true)) {
 			plugin.getLogger().log(Level.INFO, "Attempting to configure Bukkit Super Permissions");
 			bukkit = true;
 		} else {
@@ -46,7 +51,7 @@ public class Permissions {
 	}
 	
 	private void setupVaultPermissions() {
-		if (plugin.getConfig().getBoolean("permissions.vault")) {
+		if (plugin.getConfig().getBoolean("permissions.vault", false)) {
 			plugin.getLogger().log(Level.INFO, "Attempting to configure Vault permissions");
 			if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
 				plugin.getLogger().log(Level.SEVERE, "Vault could not be found");
@@ -72,19 +77,19 @@ public class Permissions {
 		if (op) {
 			plugin.getLogger().log(Level.INFO, "OP permissions set up");
 		} else {
-			plugin.getLogger().log(Level.WARNING, "OP permissions not set up");
+			plugin.getLogger().log(Level.INFO, "OP permissions not set up");
 		}
 		setupBukkitPermissions();
 		if (bukkit) {
 			plugin.getLogger().log(Level.INFO, "Bukkit Super Permissions set up");
 		} else {
-			plugin.getLogger().log(Level.WARNING, "Bukkit Super Permissions not set up");
+			plugin.getLogger().log(Level.INFO, "Bukkit Super Permissions not set up");
 		}
 		setupVaultPermissions();
 		if (vault) {
 			plugin.getLogger().log(Level.INFO, "Vault permissions set up");
 		} else {
-			plugin.getLogger().log(Level.WARNING, "Vault permissions not set up");
+			plugin.getLogger().log(Level.INFO, "Vault permissions not set up");
 		}
 		if (!vault && !bukkit) {
 			plugin.getLogger().log(Level.WARNING, "No permission systems have been set up. Default permissions will be used.");
@@ -106,7 +111,7 @@ public class Permissions {
 	}
 	
 	public boolean hasPermission(Player p, String permission) {
-		if (plugin.getConfig().getBoolean("permissions.default." + permission)) return true;
+		if (plugin.getConfig().getBoolean("permissions.default." + permission, false)) return true;
 		String node = prefix + "." + permission;
 		if (hasNode(p, node)) return true;
 		return false;
@@ -114,14 +119,14 @@ public class Permissions {
 	
 	public boolean isAdmin(Player p) {
 		if (p.isOp() && op) return true;
-		String node = "rwarp.admin";
+		String node = prefix + "admin";
 		if (hasNode(p, node)) return true;
 		return false;
 	}
 	
 	public boolean isUser(Player p) {
-		if (!plugin.getConfig().getBoolean("enable")) return false;
-		String node = "rwarp.user";
+		if (!plugin.getConfig().getBoolean("enable", true)) return false;
+		String node = prefix + "user";
 		if (hasNode(p, node)) return true;
 		if (isAdmin(p)) return true;
 		if (!bukkit && !vault) return true;
