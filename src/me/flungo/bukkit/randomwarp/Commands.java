@@ -26,13 +26,16 @@ class Commands implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] strings) {
-		if (cmnd.getName().toLowerCase().equals("rwarp")) {
-			return handleCommand(cs, strings);
+		switch (cmnd.getName().toLowerCase()) {
+			case "rwarp":
+			case "randwarp":
+			case "randomwarp":
+				return handleUserCommand(cs, strings);
 		}
 		return false;
 	}
 
-	private boolean handleCommand(CommandSender cs, String[] args) {
+	private boolean handleUserCommand(CommandSender cs, String[] args) {
 		if (cs instanceof Player && !(plugin.getPermissions().isUser((Player) cs))) {
 			cs.sendMessage(ChatColor.RED + "You don't have permisson to use that command");
 			return true;

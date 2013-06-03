@@ -6,7 +6,7 @@ description: >
              Execute Commands usings Triggers
 commands:
   rwarp:
-    aliases: [randomwarp]
+    aliases: [randomwarp, randwarp]
     description: Random warp management
     usage: |          
         /<command> [name] - Warps to the specified random warp area or default if no name is provided.
