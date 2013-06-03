@@ -19,10 +19,24 @@ drop-height: 8
 check-drop: false
 #Attempts to find a location to warp the player to
 attempts: 10
-#If a auitable location can't be found, warp them somewhere even if it may be on
+#If a suitable location can't be found, warp them somewhere even if it may be on
 #something that was being avoided.
 always-teleport: true
 #Is the plugin enabled (i.e. Can players use it)
 enable: true
 #Display extra information in the console for debugging
 debug: false
+#Default permissions settings
+permissions:
+  #Op has all permissions
+  op: true
+  #Use Bukkit permissions
+  bukkit: true
+  #Use Vault permissions
+  vault: true
+  #Default permissions for ALL players ireespective of other permissions/plugins (can be all set to false for default confiruration)
+  default:
+    admin: false
+    user: true
+    warps.default: true
+    warpother: false
