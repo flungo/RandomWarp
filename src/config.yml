@@ -15,6 +15,8 @@ avoid:
   trees: true
 #Height to drop player into place with (No fall damage is incured)
 drop-height: 8
+#Shouldn't need to but checks the full distance from drop point to ground (adds aditional check, can lower performance. Helps avoid player landing in trees)
+check-drop: false
 #Attempts to find a location to warp the player to
 attempts: 10
 #If a auitable location can't be found, warp them somewhere even if it may be on
@@ -22,3 +24,5 @@ attempts: 10
 always-teleport: true
 #Is the plugin enabled (i.e. Can players use it)
 enable: true
+#Display extra information in the console for debugging
+debug: false

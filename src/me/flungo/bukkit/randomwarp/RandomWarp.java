@@ -85,6 +85,9 @@ public class RandomWarp extends JavaPlugin {
 		double y;
 		int attempts = 0;
 		do {
+			if (getConfig().getBoolean("debug")) {
+				getLogger().log(Level.INFO, "Finding random location. Attempt: {0}", attempts+1);
+			}
 			x = x1 + rand.nextInt(x2 - x1) + 0.5d;
 			z = z1 + rand.nextInt(z2 - z1) + 0.5d;
 			y = w.getHighestBlockYAt((int) x, (int) z) + 0.5d;
@@ -96,26 +99,42 @@ public class RandomWarp extends JavaPlugin {
 		y += getConfig().getInt("drop-height");
 		return new Location(w, x, y, z);
 	}
-
+	
 	private boolean checkBlock(Block b) {
-		for (int i = 0; i < 3; i++) {
+		if (getConfig().getBoolean("check-drop", true)) {
+			int droph = getConfig().getInt("drop-height");
+			return checkBlock(b.getRelative(0, droph, 0), droph + 3);
+		} else {
+			return checkBlock(b, 3);
+		}
+	}
+	
+	private boolean checkBlock(Block b, int depth) {
+		for (int i = depth; i > 0; i--) {
 			Block cb = b.getRelative(0, -i, 0);
-			getLogger().log(Level.FINE, cb.getType().toString());
+			if (!checkSingleBlock(cb)) return false;
+		}
+		return true;
+	}
+
+	private boolean checkSingleBlock(Block b) {
+			if (getConfig().getBoolean("debug")) {
+				getLogger().log(Level.INFO, "Checking a block of type: {0}", b.getType().toString());
+			}
 			if (getConfig().getBoolean("avoid.water", true)
-					&& (cb.getType().equals(Material.WATER)
-					|| cb.getType().equals(Material.STATIONARY_WATER))) {
+					&& (b.getType().equals(Material.WATER)
+					|| b.getType().equals(Material.STATIONARY_WATER))) {
 				return false;
 			}
 			if (getConfig().getBoolean("avoid.lava", true)
-					&& (cb.getType().equals(Material.LAVA)
-					|| cb.getType().equals(Material.STATIONARY_LAVA))) {
+					&& (b.getType().equals(Material.LAVA)
+					|| b.getType().equals(Material.STATIONARY_LAVA))) {
 				return false;
 			}
 			if (getConfig().getBoolean("avoid.trees", true)
-					&& cb.getType().equals(Material.LEAVES)) {
+					&& b.getType().equals(Material.LEAVES)) {
 				return false;
 			}
-		}
 		return true;
 	}
 
