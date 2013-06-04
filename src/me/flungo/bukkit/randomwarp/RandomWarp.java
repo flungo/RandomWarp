@@ -20,7 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class RandomWarp extends JavaPlugin {
 
-	private final Permissions permissions = new Permissions(this);
+	private final Permissions permissions = new Permissions(this, "rwarp");
 	public static RandomWarp plugin;
 	private PluginDescriptionFile pdf;
 	private PluginManager pm;
