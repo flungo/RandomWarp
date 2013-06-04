@@ -18,7 +18,6 @@
 package me.flungo.bukkit.randomwarp;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

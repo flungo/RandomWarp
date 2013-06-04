@@ -19,12 +19,10 @@ package me.flungo.bukkit.randomwarp;
 
 import java.util.Random;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
