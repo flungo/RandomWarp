@@ -67,7 +67,7 @@ public class RandomWarp extends JavaPlugin {
 
 	public void teleport(Player p, String area) throws InvalidAreaException, InvalidWorldException, InvalidCoordinatesException, NoLocationFoundException {
 		p.teleport(randomLoc(area));
-		p.setFallDistance(-getConfig().getInt("drop-height"));
+		p.setFallDistance(-getConfig().getInt("drop-height")-0.5f);
 	}
 
 	public Location randomLoc(String area) throws InvalidAreaException, InvalidWorldException, InvalidCoordinatesException, NoLocationFoundException {
