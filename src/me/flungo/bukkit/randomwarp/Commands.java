@@ -18,6 +18,7 @@
 package me.flungo.bukkit.randomwarp;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -68,6 +69,14 @@ class Commands implements CommandExecutor {
 				}
 			}
 			switch (args[0].toLowerCase()) {
+				case "reload":
+					if (cs instanceof Player && !plugin.getPermissions().isAdmin((Player) cs)) {
+						cs.sendMessage(ChatColor.RED + "You do not have permission to do that");
+						plugin.getLogger().log(Level.WARNING, "Player {0} tried to reload the plugin", cs.getName());
+						return true;
+					}
+					plugin.reload();
+					return true;
 				default:
 					if (args.length == 1) {
 						if (cs instanceof Player) {
