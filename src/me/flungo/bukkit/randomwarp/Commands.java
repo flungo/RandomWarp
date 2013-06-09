@@ -76,6 +76,7 @@ class Commands implements CommandExecutor {
 						return true;
 					}
 					plugin.reload();
+					cs.sendMessage(ChatColor.GREEN + "RandomWarp has been reloaded");
 					return true;
 				default:
 					if (args.length == 1) {

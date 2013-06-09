@@ -61,8 +61,7 @@ public class RandomWarp extends JavaPlugin {
 	}
 
 	public void reload() {
-		onDisable();
-		onEnable();
+		reloadConfig();
 	}
 
 	public void teleport(Player p, String area) throws InvalidAreaException, InvalidWorldException, InvalidCoordinatesException, NoLocationFoundException {
