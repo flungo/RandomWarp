@@ -35,10 +35,6 @@ public class Permissions {
 		this.prefix = prefix;
 	}
 	
-	public Permissions(JavaPlugin instance) {
-		this(instance, instance.getName().replace("\\s", "").toLowerCase());
-	}
-	
 	private static boolean op;
 	
 	private static boolean bukkit;
@@ -136,14 +132,14 @@ public class Permissions {
 	
 	public boolean isAdmin(Player p) {
 		if (p.isOp() && op) return true;
-		String node = prefix + "admin";
+		String node = prefix + ".admin";
 		if (hasNode(p, node)) return true;
 		return false;
 	}
 	
 	public boolean isUser(Player p) {
 		if (!plugin.getConfig().getBoolean("enable", true)) return false;
-		String node = prefix + "user";
+		String node = prefix + ".user";
 		if (hasNode(p, node)) return true;
 		if (isAdmin(p)) return true;
 		if (!bukkit && !vault) return true;
