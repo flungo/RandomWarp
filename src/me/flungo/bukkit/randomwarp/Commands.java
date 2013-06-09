@@ -56,8 +56,13 @@ class Commands implements CommandExecutor {
 		try {
 			if (args.length <= 0) {
 				if (cs instanceof Player) {
+					String area = plugin.getConfig().getString("default");
+					if (!plugin.getPermissions().hasPermission((Player) cs, "warps." + area)) {
+						cs.sendMessage(ChatColor.RED + "You do not have permission for the default area");
+						return true;
+					}
 					try {
-						plugin.teleport((Player) cs, plugin.getConfig().getString("default"));
+						plugin.teleport((Player) cs, area);
 					} catch (InvalidAreaException ex) {
 						cs.sendMessage("Could not teleport you. Contact server admin.");
 						plugin.getLogger().log(Level.WARNING, "Default area {0} doesn't exists", ex.getMessage());
