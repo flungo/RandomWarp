@@ -37,7 +37,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RandomWarp extends JavaPlugin {
 
 	private final Permissions permissions = new Permissions(this, "rwarp");
-	public static RandomWarp plugin;
 	private PluginDescriptionFile pdf;
 	private PluginManager pm;
 	private Random rand = new Random();
@@ -105,14 +104,17 @@ public class RandomWarp extends JavaPlugin {
 		double y;
 		int attempts = 0;
 		do {
-			if (getConfig().getBoolean("debug")) {
+			if (getConfig().getBoolean("debug", false)) {
 				getLogger().log(Level.INFO, "Finding random location. Attempt: {0}", attempts+1);
 			}
 			x = x1 + rand.nextInt(x2 - x1) + 0.5d;
 			z = z1 + rand.nextInt(z2 - z1) + 0.5d;
 			y = w.getHighestBlockYAt((int) x, (int) z) + 0.5d;
-			Chunk chunk = w.getChunkAt((int)x, (int)z);
-			if (chunk.isLoaded()) {
+			Chunk chunk = w.getChunkAt((int)x, (int) z);
+			if (getConfig().getBoolean("preload-chunks", true) && !chunk.isLoaded()) {
+				if (getConfig().getBoolean("debug", false)) {
+					getLogger().log(Level.INFO, "Loading/ Generating chunk {0}", chunk.toString());
+				}
 				chunk.load(true);
 			}
 		} while (!checkBlock(w.getBlockAt((int) x, (int) y, (int) z))

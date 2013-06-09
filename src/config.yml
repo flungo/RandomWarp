@@ -17,10 +17,11 @@ avoid:
 drop-height: 8
 #Shouldn't need to but checks the full distance from drop point to ground (adds aditional check, can lower performance. Helps avoid player landing in trees)
 check-drop: false
+#Loads (and generates if required) the chunk before testing the tp location
+preload-chunks: true
 #Attempts to find a location to warp the player to
 attempts: 10
-#If a suitable location can't be found, warp them somewhere even if it may be on
-#something that was being avoided.
+#If a suitable location can't be found, warp them somewhere even if it may be on something that was being avoided.
 always-teleport: true
 #Is the plugin enabled (i.e. Can players use it)
 enable: true
