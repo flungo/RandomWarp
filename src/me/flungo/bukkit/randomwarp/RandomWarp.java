@@ -19,6 +19,7 @@ package me.flungo.bukkit.randomwarp;
 
 import java.util.Random;
 import java.util.logging.Level;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -110,6 +111,10 @@ public class RandomWarp extends JavaPlugin {
 			x = x1 + rand.nextInt(x2 - x1) + 0.5d;
 			z = z1 + rand.nextInt(z2 - z1) + 0.5d;
 			y = w.getHighestBlockYAt((int) x, (int) z) + 0.5d;
+			Chunk chunk = w.getChunkAt((int)x, (int)z);
+			if (chunk.isLoaded()) {
+				chunk.load(true);
+			}
 		} while (!checkBlock(w.getBlockAt((int) x, (int) y, (int) z))
 				&& attempts++ < getConfig().getInt("attempts"));
 		if (attempts >= getConfig().getInt("attempts") && !getConfig().getBoolean("always-teleport", true)) {
